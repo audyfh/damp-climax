@@ -7,7 +7,7 @@ import { useRef, useEffect } from 'react'
 import 'swiper/css';
 
 
-const EarthTimeline = () => {
+const EerthSwiper = () => {
      const swiperRef = useRef(null);
 
   // Solusi untuk memastikan hanya satu slide yang terlihat
@@ -21,7 +21,7 @@ const EarthTimeline = () => {
   }, []);
   return (
     <div className="flex flex-col items-center justify-center text-center">
-      <h2 className="text-xl font-bold text-green-700">Lets Take a Look!</h2>
+      <h2 className="text-2xl font-bold text-green-700">Lets Take a Look!</h2>
       <h3 className="text-sm text-black mb-6">Planet Earth Through The Age</h3>
       <div className="relative w-[300px] h-[300px] md:w-[450px] md:h-[450px] rounded-full bg-green-700 flex items-center justify-center shadow-lg overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -69,4 +69,4 @@ const EarthTimeline = () => {
   )
 }
 
-export default EarthTimeline
+export default EerthSwiper

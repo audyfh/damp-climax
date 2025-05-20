@@ -1,9 +1,30 @@
 import { members } from ".."
 import { tips } from ".."
-import EarthTimeline from "../components/EarthTimeline"
+import EarthSwiper from "../components/EarthSwiper"
 import MemberCard from "../components/MemberCard"
 import TipsCard from "../components/TipsCard"
+import { useState, useEffect } from "react";
+
 const Home = () => {
+
+  const [funfacts, setFunfacts] = useState([]);
+  const [selectedFact, setSelectedFact] = useState(null);
+
+  useEffect(() => {
+    fetch("/data/funfacts.json")
+      .then((res) => res.json())
+      .then((data) => setFunfacts(data))
+      .catch((err) => console.error("Failed to fetch funfacts", err));
+  }, []);
+
+  const handleShowPopup = () => {
+    if (funfacts.length > 0) {
+      const randomIndex = Math.floor(Math.random() * funfacts.length);
+      setSelectedFact(funfacts[randomIndex]);
+    }
+  };
+
+  const closePopup = () => setSelectedFact(null);
 
 
   return (
@@ -56,8 +77,41 @@ const Home = () => {
       </div>
 
       <div>
-        <EarthTimeline/>
+        <EarthSwiper/>
       </div>
+
+         <div className="flex flex-col md:flex-row justify-evenly items-center p-5 mt-8">
+        <img src="/images/earthfact.png" alt="" className="w-60 h-auto" />
+        <div className="flex flex-col gap-y-4 text-center">
+            <h1 className="text-2xl italic">
+              <span className="text-climax-green font-bold not-italic">Earthfact</span>
+              <br className="md:hidden" />
+              <span className="hidden md:inline not-italic">:</span> a collection of daily<br />facts about earth
+            </h1>
+            <button
+              onClick={handleShowPopup}
+              className="bg-white font-semibold text-climax-green border border-climax-green rounded-4xl p-3 w-fit hover:bg-climax-green hover:text-white"
+            >
+              Learn something new
+            </button>
+        </div>
+      </div>
+
+      {/* Popup */}
+      {selectedFact && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center px-4">
+          <div className="bg-[#15803d] rounded-xl p-6 text-white w-full max-w-lg relative shadow-lg">
+            <button onClick={closePopup} className="absolute top-3 right-3 text-white text-xl font-bold hover:text-gray-300">×</button>
+            <div className="flex flex-col items-start gap-4">
+              <img src={selectedFact.icon} alt="icon" className="w-12 h-12 bg-white rounded-2xl p-1" />
+              <div>
+                <p className="font-semibold">{selectedFact.text}</p>
+                <a href={selectedFact.link} className="mt-2 inline-block text-sm underline hover:text-gray-200">Learn More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
    </div>
   )
